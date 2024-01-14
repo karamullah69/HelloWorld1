@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Package') {
             steps {
-                sh 'docker build -t hello-world-1 .'  // or any packaging command
+                sh 'docker build -t hello-world-1:latest .'  // or any packaging command
             }
         }
         stage('Deploy to Kubernetes') {
