@@ -1,6 +1,3 @@
-# Copy ca.pem to the /certs/client/ directory inside the image
-COPY /certs/client/ca.pem /certs/client/
-
 # Print the contents of the build context
 RUN ls -R /
 
