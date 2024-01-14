@@ -5,7 +5,7 @@ FROM openjdk:8-jre-alpine
 WORKDIR /app
 
 # Copy the application JAR or files into the container
-COPY target/your-application.jar .
+COPY target/myproject.jar .
 
 # Define the command to run your application
-CMD ["java", "-jar", "your-application.jar"]
+CMD ["java", "-jar", "myproject.jar"]
