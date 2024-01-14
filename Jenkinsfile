@@ -17,5 +17,13 @@ pipeline {
                 sh 'docker build -t hello-world-1 .'  // or any packaging command
             }
         }
+        stage('Deploy to Kubernetes') {
+           steps {
+             script {
+               sh 'kubectl apply -f kubernetes/hello-world-1-deployment.yaml'
+             }
+           }
+        }
+  
     }
 }
