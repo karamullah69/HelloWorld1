@@ -1,3 +1,10 @@
+# Dockerfile
+ARG CERT_PATH
+
+# Now you can use $CERT_PATH in subsequent instructions
+COPY $CERT_PATH /path/in/container
+
+
 # Use a base image (for example, OpenJDK for Java applications)
 FROM openjdk:8-jre-alpine
 
