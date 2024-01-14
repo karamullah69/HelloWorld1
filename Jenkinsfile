@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Package') {
             steps {
-                sh 'docker build -t hello-world-1 .'  // or any packaging command
+                sh 'docker build -t hello-world-1 --build-arg CERT_PATH=/home/user/ca.pem .'  // or any packaging command
             }
         }
         stage('Deploy to Kubernetes') {
