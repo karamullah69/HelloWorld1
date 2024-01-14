@@ -1,3 +1,4 @@
+ADD ca.pem /certs/client/ca.pem
 # Use a base image (for example, OpenJDK for Java applications)
 FROM openjdk:8-jre-alpine
 
