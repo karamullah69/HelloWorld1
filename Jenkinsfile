@@ -1,33 +1,42 @@
 pipeline {
     agent any
-    
-    tools {
-        maven 'Maven'
+
+    parameters {
+         string(name: 'tomcat_dev', defaultValue: '35.166.210.154', description: 'Staging Server')
+         string(name: 'tomcat_prod', defaultValue: '34.209.233.6', description: 'Production Server')
     }
-    
-    stages {
-        stage('Build') {
+
+    triggers {
+         pollSCM('* * * * *')
+     }
+
+stages{
+        stage('Build'){
             steps {
-                sh 'mvn clean install'  // or any build command
+                sh 'mvn clean package'
+            }
+            post {
+                success {
+                    echo 'Now Archiving...'
+                    archiveArtifacts artifacts: '**/target/*.war'
+                }
             }
         }
-        stage('Test') {
-            steps {
-                sh 'mvn test'  // or any test command
+
+        stage ('Deployments'){
+            parallel{
+                stage ('Deploy to Staging'){
+                    steps {
+                        sh "scp -i /home/jenkins/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat_dev}:/var/lib/tomcat7/webapps"
+                    }
+                }
+
+                stage ("Deploy to Production"){
+                    steps {
+                        sh "scp -i /home/jenkins/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat_prod}:/var/lib/tomcat7/webapps"
+                    }
+                }
             }
         }
-        stage('Package') {
-            steps {
-                sh 'docker build -t hello-world-1 .'  // or any packaging command
-            }
-        }
-        stage('Deploy to Kubernetes') {
-           steps {
-             script {
-               sh 'kubectl apply -f kubernetes/hello-world-1-deployment.yaml'
-             }
-           }
-        }
-  
     }
 }
